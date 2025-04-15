@@ -4,20 +4,31 @@ import os
 from datetime import datetime
 
 
-def scatter_plot_csv(csv_file,x_col,y1_col):
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+
+
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+
+#uncomment y2_col to be able to plt a 3rd line, make  sire data y2 is assigned and updated into the plot. 
+def scatter_plot_course_csv(csv_file,x_col,y1_col,y2_col=None):
 
     # Load CSV file
-    #data = pd.read_csv('mydata.csv')
+    #data = pd.read_csv('mydata.csv')                                   #uncomment to plot extra column of data 
     data = pd.read_csv(csv_file)
 
     # Check if the CSV has at least 4 columns
     if data.shape[1] < 2:
-        raise ValueError("CSV file must contain at least 4 columns.")
+        raise ValueError("CSV file must contain at least 2 columns.")
 
     # Select columns (column indices start at 0)
-    x = data.iloc[:, x_col]  # Column 1
-    y1 = data.iloc[:, y1_col]  # Column 3
-    #y2 = data.iloc[:, 3]  # Column 4
+    x = data.iloc[:, x_col]  
+    y1 = data.iloc[:, y1_col]  
+    # Optional third column
+    y2 = data.iloc[:, y2_col] if y2_col is not None else None
 
     # Create output directory if it doesn't exist
     output_dir = 'plot outputs'
@@ -25,16 +36,22 @@ def scatter_plot_csv(csv_file,x_col,y1_col):
 
     # Create timestamp for filename
     timestamp = datetime.now().strftime("%Y-%m-%d_%H%M")
-    filename = f'Scatter_Plot_{timestamp}.png'
+    filename = f'Coarse_Scatter_Plot_{timestamp}.png'
     output_path = os.path.join(output_dir, filename)
 
 
-    # plotting scatter of same data
+    # Plotting
     plt.figure(figsize=(10, 6))
-    plt.scatter(x, y1, label='Column 3, Course degree over time(scatter)')
-    #plt.plot(x, y2, label='Column 4') ##uncomment to add another column of data from .csv, specify what y2 is 
+
+    # Fine-tuned scatter plot for y1
+    plt.scatter(x, y1, s=10, marker='o', label=str('Column '+ str(y1_col)))
+
+    # Optional third line using plot (line plot for contrast)
+    if y2 is not None:
+        plt.scatter(x, y2, color='orange', linewidth=1.5, label=f'Column {y2_col}')
+                                     #uncomment to plot extra column of data to graph
     plt.xlabel('time (ms)')
-    plt.ylabel('Coarse degree over time')
+    plt.ylabel('Coarse degree')
     plt.title('Course degree over time')
     plt.legend()
     plt.grid(True)
@@ -48,20 +65,33 @@ def scatter_plot_csv(csv_file,x_col,y1_col):
     print(f"Plot saved to {output_path}")
 
 
-def linear_plot_csv(csv_file,x_col,y1_col):
+
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+
+
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+
+
+    #uncomment y2_col to be able to plt a 3rd line, make  sire data y2 is assigned and updated into the plot. 
+def linear_plot_course_csv(csv_file,x_col,y1_col,y2_col=None):
 
     # Load CSV file
-    #data = pd.read_csv('mydata.csv')
+    #data = pd.read_csv('mydata.csv')                                   #uncomment to plot extra column of data 
     data = pd.read_csv(csv_file)
 
     # Check if the CSV has at least 4 columns
     if data.shape[1] < 2:
-        raise ValueError("CSV file must contain at least 4 columns.")
+        raise ValueError("CSV file must contain at least 2 columns.")
 
     # Select columns (column indices start at 0)
-    x = data.iloc[:, x_col]  # Column 1
-    y1 = data.iloc[:, y1_col]  # Column 3
-    #y2 = data.iloc[:, 3]  # Column 4
+    x = data.iloc[:, x_col]  
+    y1 = data.iloc[:, y1_col]  
+    # Optional third column
+    y2 = data.iloc[:, y2_col] if y2_col is not None else None 
 
     # Create output directory if it doesn't exist
     output_dir = 'plot outputs'
@@ -69,15 +99,19 @@ def linear_plot_csv(csv_file,x_col,y1_col):
 
     # Create timestamp for filename
     timestamp = datetime.now().strftime("%Y-%m-%d_%H%M")
-    filename = f'Linear_Plot_{timestamp}.png'
+    filename = f'Coarse_Linear_Plot_{timestamp}.png'
     output_path = os.path.join(output_dir, filename)
 
     # Plotting line plot 
     plt.figure(figsize=(10, 6))
-    plt.plot(x, y1, label='Column 3, Course degree over time')
-    #plt.plot(x, y2, label='Column 4') ##uncomment to add another column of data from .csv, specify what y2 is 
+    plt.plot(x, y1, label=str('Column '+ str(y1_col)))
+
+    # Optional third line using plot (line plot for contrast)
+    if y2 is not None:
+        plt.plot(x, y2, color='orange', linewidth=1.5, label=f'Column {y2_col}')
+
     plt.xlabel('time (ms)')
-    plt.ylabel('Coarse degree over time')
+    plt.ylabel('Coarse degree')
     plt.title('Course degree over time')
     plt.legend()
     plt.grid(True)
@@ -90,6 +124,15 @@ def linear_plot_csv(csv_file,x_col,y1_col):
 
 
     print(f"Plot saved to {output_path}")
+
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+
+
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
 
 #example use
 #scatter_plot_csv('parsed_serial_log.csv')
